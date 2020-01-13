@@ -1,4 +1,5 @@
 const jsonfile = require('jsonfile')
+const fs = require('fs');
  
 let documentsInFile = 0;
 let nbrFiles = 0;
@@ -9,13 +10,16 @@ const obj = { name: 'JP' }
 
 const bggToJson = {
     append: (documents) => {
-        if (documentsInFile > 10000) {
+        if (documentsInFile > 1000) {
             documentsInFile = 0;
             nbrFiles++;
         }
-        jsonfile.writeFile(`${file}${nbrFiles}.json`, documents, { flag: 'a' }, function (err) {
-            if (err) console.error(err)
-          })
+        let currentFile = `${file}${nbrFiles}.json`;
+        if (!fs.existsSync(currentFile)) {
+            fs.writeFileSync(currentFile, JSON.stringify([], null, ' '))    
+        }
+        let current = JSON.parse(fs.readFileSync(currentFile))
+        fs.writeFileSync(currentFile, JSON.stringify([...documents, ...current], null, ' '))
         documentsInFile += documents.length;
     }
 };

@@ -1,0 +1,24 @@
+{
+  "name": "bgg_dataset",
+  "version": "0.1.0",
+  "description": "Extract all boardgames in json format",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bidoubiwa/bgg_dataset.git"
+  },
+  "author": "Charlotte Vermandel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bidoubiwa/bgg_dataset/issues"
+  },
+  "homepage": "https://github.com/bidoubiwa/bgg_dataset#readme",
+  "dependencies": {
+    "axios": "^0.19.1",
+    "jsonfile": "^5.0.0",
+    "xmldom": "^0.2.1"
+  }
+}

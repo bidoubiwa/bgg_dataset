@@ -8,24 +8,25 @@ function sleep(ms) {
   }
 
 (async () => {
-    for (let id = 0; id < 401; id = id + 200) {
+    for (let id = 0; id < 201; id = id + 160) {
         // console.log({ id });
-        let first = Array.from(Array(100).keys()).map(x => x + id);
-        let second = Array.from(Array(100).keys()).map(x => x + 100 + id);
+        let first = Array.from(Array(80).keys()).map(x => x + id);
+        let second = Array.from(Array(80).keys()).map(x => x + 80 + id);
+        console.log({
+            first, second
+        });
         
-        // console.log({ 
-        //     first,
-        //     second
-        // });
-        sleep(1)
-        let hello = await bggCalls.gameInformation([1,2,3]);
-        let res = bggExtract.extendedGameInfo(hello, id);
-        // console.log({ res });
-        if (res) {
-            bggToJson.append(res);
+        let games = await bggCalls.gameInformation(first);
+        let res1 = bggExtract.extendedGameInfo(games, first);
+        let secondgames = await bggCalls.gameInformation(second);
+        let res2 = bggExtract.extendedGameInfo(secondgames, second);
+        let total = [...res1, ...res2];
+        if (total) {
+            bggToJson.append(total);
         } else {
-            console.log(`${id} is not a game`); 
+            console.log(`${total} is not a game`); 
         }
+        sleep(1)
     }
 
 })()

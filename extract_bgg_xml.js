@@ -17,7 +17,7 @@ const extractXML = {
     }
     return {allResults, compareArray}
   },
-  extendedGameInfo: (rawGames, id) => {
+  extendedGameInfo: (rawGames, ids) => {
     try {
       let games = rawGames.getElementsByTagName("items");
       let nbrOfGames = games[0].getElementsByTagName("item").length; 
@@ -25,9 +25,9 @@ const extractXML = {
       let allGames = [];
       for (let index = 0; index < nbrOfGames; index++) {
         let extendedInfo = {};
-        extendedInfo.id = id;
-        extendedInfo.name = game[index].getElementsByTagName("name")[0].getAttribute('value');;
-        console.log(extendedInfo.name);
+        extendedInfo.id = ids[index];
+        extendedInfo.name = game[index].getElementsByTagName("name")[0].getAttribute('value');
+        console.log({name: extendedInfo.name, id:ids[index]});
         // Extract Year of publish 
         extendedInfo.yearPublished = game[index].getElementsByTagName("yearpublished")[0].getAttribute('value');
         // Extract all link tags for sorting purpose
@@ -39,13 +39,13 @@ const extractXML = {
           let type = link.getAttribute('type');
           return { ...acc, [type]: [ ...((acc[type]) ? acc[type] : []), link.getAttribute('value')]}
         }, {});
-        console.log({ linkInfo });
+        
         // Extract ratings, which is a sub tag in the item tag
         let ratings = game[index].getElementsByTagName('statistics')[0].getElementsByTagName('ratings')[0];
-        console.log({ ratings });
+        // console.log({ ratings });
         // Extract ranks which is a sub tag in the ratings tag
         let ranks = Array.prototype.slice.call(ratings.getElementsByTagName('ranks')[0].getElementsByTagName('rank'), 0);
-        console.log({ ranks });
+        // console.log({ ranks });
         
         extendedInfo.ranks = ranks.reduce((acc, rank) => {
           let rankName = rank.getAttribute('friendlyname');
@@ -68,6 +68,8 @@ const extractXML = {
         
         allGames.push(extendedInfo);
       }
+      // console.log({ allGames });
+      
       return allGames
     } catch (e) {
       throw e;

@@ -15,7 +15,7 @@ const bggApiCalls = {
   },
   gameInformation: async (ids) => {
     // Get extented information about boardgame
-    console.log(ids.join(','));
+    // console.log(ids.join(','));
     
     return axios.get(`https://www.boardgamegeek.com/xmlapi2/thing?id=${ids.join(',')}&stats=1&pagesize=100`)
     .then(response => {
