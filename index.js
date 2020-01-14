@@ -8,25 +8,26 @@ function sleep(ms) {
   }
 
 (async () => {
-    for (let id = 0; id < 201; id = id + 160) {
-        // console.log({ id });
+    for (let id = 74000; id < 300000; id = id + 160) {
+        
+        console.log(' Creating first and second array');
         let first = Array.from(Array(80).keys()).map(x => x + id);
         let second = Array.from(Array(80).keys()).map(x => x + 80 + id);
-        console.log({
-            first, second
-        });
-        
+        console.log('First Bgg Calls');
         let games = await bggCalls.gameInformation(first);
         let res1 = bggExtract.extendedGameInfo(games, first);
+        console.log('Second Bgg Calls');
         let secondgames = await bggCalls.gameInformation(second);
         let res2 = bggExtract.extendedGameInfo(secondgames, second);
         let total = [...res1, ...res2];
+        console.log('Adding to files');
+        
         if (total) {
             bggToJson.append(total);
         } else {
             console.log(`${total} is not a game`); 
         }
-        sleep(1)
+        // await sleep(500)
     }
 
 })()
