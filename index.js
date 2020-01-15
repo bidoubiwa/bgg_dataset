@@ -8,7 +8,7 @@ function sleep(ms) {
   }
 
 (async () => {
-    for (let id = 74000; id < 300000; id = id + 160) {
+    for (let id = 266192; id < 266492; id = id + 160) {
         
         console.log(' Creating first and second array');
         let first = Array.from(Array(80).keys()).map(x => x + id);
@@ -23,6 +23,8 @@ function sleep(ms) {
         console.log('Adding to files');
         
         if (total) {
+            // console.log({ total });
+            
             bggToJson.append(total);
         } else {
             console.log(`${total} is not a game`); 
