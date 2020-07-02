@@ -1,12 +1,14 @@
-const jsonfile = require('jsonfile')
 const fs = require('fs');
  
 let documentsInFile = 0;
-let nbrFiles = 48;
+let nbrFiles = getNbrFile();
 let file = './data/bggdata'
 const obj = { name: 'JP' }
  
-
+function getNbrFile() {
+    const files = fs.readdirSync('./data')
+    return files.length
+}
 
 const bggToJson = {
     append: (documents) => {
@@ -19,7 +21,6 @@ const bggToJson = {
             console.log(`Create new ${currentFile}`);
             fs.writeFileSync(currentFile, JSON.stringify([], null, ' '))    
         }
-
         let current = JSON.parse(fs.readFileSync(currentFile))
         console.log(`Document read ${currentFile}`);
         fs.writeFileSync(currentFile, JSON.stringify([...documents, ...current], null, ' '))

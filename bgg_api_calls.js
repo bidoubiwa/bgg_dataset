@@ -10,7 +10,7 @@ const bggApiCalls = {
     .then(str => (new window.DOMParser()).parseFromString(str, "text/xml"))
     .then(res =>  res)
     .catch(err => {
-      console.log({ msg: err.message, stack: err.stack });
+      console.error(err);
     })
   },
   gameInformation: async (ids) => {
@@ -18,7 +18,6 @@ const bggApiCalls = {
     
     return axios.get(`https://www.boardgamegeek.com/xmlapi2/thing?id=${ids.join(',')}&stats=1&pagesize=100`)
     .then(response => {
-      console.log(response.config.url);
       return response.data
     })
     .then(str => new DOMParser().parseFromString(str, "text/xml"))

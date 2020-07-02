@@ -30,10 +30,9 @@ const extractXML = {
             let extendedInfo = {};
             let linkInfo = {};
             
-
             extendedInfo.id = game[index].getAttribute('id');
             extendedInfo.name = game[index].getElementsByTagName("name")[0].getAttribute('value');
-            console.log({name: extendedInfo.name, id:extendedInfo.id });
+            extendedInfo.alternative = Array.from(game[index].getElementsByTagName("name")).map(x => x.getAttribute('value'))
             
             // description
             try {
@@ -42,7 +41,7 @@ const extractXML = {
 
             // polls
             try {
-              let polls = Array.prototype.slice.call(game[index].getElementsByTagName("poll"), 0);
+              let polls = Array.prototype.slice.call(game[index].getElementsByTagName("poll"), 0);            
               polls.reduce((acc, poll) => {
                 let type = poll.getAttribute('name');
                 if (type === "suggested_playerage") {
@@ -68,7 +67,6 @@ const extractXML = {
                 }
                 else if (type === "suggested_numplayers") {
                   try {
-
                     let suggested_numplayers = {};
                     let results = Array.prototype.slice.call(poll.getElementsByTagName('results'))
                     let totalvote = Number(poll.getAttribute('totalvotes'))
@@ -77,18 +75,14 @@ const extractXML = {
   
                       let categories = Array.prototype.slice.call(result.getElementsByTagName('result'))
                       let opinions = categories.reduce((acc, curr) => {
-                        let numVotes = Number(curr.getAttribute('numvotes'));
-                        console.log({ numVotes });
+                      let numVotes = Number(curr.getAttribute('numvotes'));
+                        
                         
                         return {...acc, [curr.getAttribute('value')]: ((numVotes / totalvote) * 100).toFixed(2) }
                       }, {});
-                      console.log({ opinions });
-                      
-                      // if (Object.keys(opinions).length > 0)
                        suggested_numplayers[numplayer] = opinions;
                     })
                     if (Object.keys(suggested_numplayers).length > 0) extendedInfo.suggested_numplayers = suggested_numplayers;
-                    console.log(extendedInfo.suggested_numplayers);
                   } catch (e) { 
                     console.log({ e, e: e.message});
                     
@@ -97,13 +91,25 @@ const extractXML = {
                       
                 }
                 else if (type === "language_dependence") {
+                  const languageDependence = []
+                  let results = Array.prototype.slice.call(poll.getElementsByTagName('results'))
+                  results.map(result => {
+                    let categories = Array.prototype.slice.call(result.getElementsByTagName('result'))
+                    categories.map(cat => {
+                      languageDependence.push( {
+                          level: cat.getAttribute("level"),
+                          value: cat.getAttribute("value"),
+                          numvotes: cat.getAttribute("numvotes")
+                      })
+                    })
+                  })
+                  if (Object.keys(languageDependence).length > 0) extendedInfo.language_dependence = languageDependence;
                   
                 }
                 return 0;
                 
               }, {});
             } catch (_) { }
-            console.log({ extendedInfo });
             
             try {
               // Year of publish 
@@ -121,9 +127,10 @@ const extractXML = {
             } catch (_) { }
             
             // RATINGS
+            let ratings;
             try {
               // Extract ratings, which is a sub tag in the item tag
-              let ratings = game[index].getElementsByTagName('statistics')[0].getElementsByTagName('ratings')[0];
+              ratings = game[index].getElementsByTagName('statistics')[0].getElementsByTagName('ratings')[0];
               // console.log({ ratings });          
               // Extract ranks which is a sub tag in the ratings tag
               let ranks = Array.prototype.slice.call(ratings.getElementsByTagName('ranks')[0].getElementsByTagName('rank'), 0);
@@ -139,15 +146,17 @@ const extractXML = {
             extendedInfo = { ...extendedInfo, ...linkInfo};
           
             // USER RATED
-            try {
+            try {              
               extendedInfo.numberRatings = ratings.getElementsByTagName('usersrated')[0].getAttribute('value')
-            } catch (_) { }
+            } catch (e) { 
+                console.error(e);
+            }
             // AVERRAGE
             try {
               extendedInfo.average = ratings.getElementsByTagName('average')[0].getAttribute('value')
             } catch (_) { }
             try {
-              extendedInfo.averageweight = ratings.getElementsByTagName('averageweight')[0].getAttribute('value')
+              extendedInfo.difficulty = ratings.getElementsByTagName('averageweight')[0].getAttribute('value')
             } catch (_) { }
             try {
               // Extract minimum Players
@@ -174,7 +183,9 @@ const extractXML = {
             } catch (_) { }
             allGames.push(extendedInfo);
           }
-        } catch (_) { 
+        } catch (e) { 
+          console.error(e);
+
           console.log(`id ${id} does not exist`, {e: e.message});
         }
       } // CLOSING FOR

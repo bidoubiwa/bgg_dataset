@@ -4,6 +4,10 @@
   "description": "Extract all boardgames in json format",
   "main": "index.js",
   "scripts": {
+    "fetch_boardgames": "node index.js",
+    "bgg_to_meili": "node bgg_to_meilisearch.js",
+    "meili_updates": "node meilisearch_updates.js",
+    "meili_settings": "node bgg_meilisearch_settings.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,7 +22,8 @@
   "homepage": "https://github.com/bidoubiwa/bgg_dataset#readme",
   "dependencies": {
     "axios": "^0.19.1",
-    "jsonfile": "^5.0.0",
+    "dotenv": "^8.2.0",
+    "meilisearch": "^0.11.0",
     "xmldom": "^0.2.1"
   }
 }

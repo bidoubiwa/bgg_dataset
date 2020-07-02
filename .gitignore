@@ -91,3 +91,10 @@ lerna-debug.log
 Thumbs.db
 data/
 data.zip
+
+data/
+data2/
+data3/
+data_complete/
+bgg.zip
+sandbox.txt
