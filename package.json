@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/bidoubiwa/bgg_dataset#readme",
   "dependencies": {
-    "axios": "^0.19.1",
+    "axios": "^0.21.1",
     "dotenv": "^8.2.0",
     "meilisearch": "^0.11.0",
     "xmldom": "^0.2.1"
